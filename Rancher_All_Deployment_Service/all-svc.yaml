@@ -1,0 +1,669 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T19:56:57Z"
+    name: crm-api
+    namespace: default
+    resourceVersion: "157525"
+    uid: 3096cd81-7a76-4036-81c0-860edeba852d
+  spec:
+    clusterIP: 10.43.80.120
+    clusterIPs:
+    - 10.43.80.120
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5103
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: crm-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T19:57:01Z"
+    name: dms-api
+    namespace: default
+    resourceVersion: "157546"
+    uid: 14f0097f-09d7-45de-a558-5f6536933e19
+  spec:
+    clusterIP: 10.43.6.25
+    clusterIPs:
+    - 10.43.6.25
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5108
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: dms-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T20:00:42Z"
+    name: finance-api
+    namespace: default
+    resourceVersion: "158313"
+    uid: 1c8743a5-ad8e-428f-82b7-171718768282
+  spec:
+    clusterIP: 10.43.173.23
+    clusterIPs:
+    - 10.43.173.23
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5106
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: finance-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T20:00:46Z"
+    name: finance-background
+    namespace: default
+    resourceVersion: "158331"
+    uid: 03b61347-5a03-481f-9e26-8a05ee7d9375
+  spec:
+    clusterIP: 10.43.8.17
+    clusterIPs:
+    - 10.43.8.17
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5117
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: finance-background
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T19:58:23Z"
+    name: hr-api
+    namespace: default
+    resourceVersion: "157834"
+    uid: 21bc4310-fb58-4b1c-b5e5-101402f7d346
+  spec:
+    clusterIP: 10.43.56.98
+    clusterIPs:
+    - 10.43.56.98
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5107
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: hr-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30884,"protocol":"TCP","serviceName":"default:identity-api","allNodes":true}]'
+    creationTimestamp: "2022-06-09T05:31:12Z"
+    name: identity-api
+    namespace: default
+    resourceVersion: "9374417"
+    uid: 19ab2362-2370-4675-aac0-0034c3d12f33
+  spec:
+    clusterIP: 10.43.49.100
+    clusterIPs:
+    - 10.43.49.100
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30884
+      port: 5105
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: identity-api
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T20:12:04Z"
+    name: identity-background
+    namespace: default
+    resourceVersion: "160678"
+    uid: 786f9f01-e861-455c-b081-d295ad64f761
+  spec:
+    clusterIP: 10.43.39.31
+    clusterIPs:
+    - 10.43.39.31
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5115
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: identity-background
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":32154,"protocol":"TCP","serviceName":"default:jenkins","allNodes":true}]'
+      meta.helm.sh/release-name: jenkins
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-06-10T11:51:44Z"
+    labels:
+      app.kubernetes.io/component: jenkins-controller
+      app.kubernetes.io/instance: jenkins
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: jenkins
+      helm.sh/chart: jenkins-4.1.8
+    name: jenkins
+    namespace: default
+    resourceVersion: "9374418"
+    uid: 0bae3bcf-c165-40ce-b5a9-ece0e98b5a52
+  spec:
+    clusterIP: 10.43.0.48
+    clusterIPs:
+    - 10.43.0.48
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 32154
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app.kubernetes.io/component: jenkins-controller
+      app.kubernetes.io/instance: jenkins
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: jenkins
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-06-10T11:51:44Z"
+    labels:
+      app.kubernetes.io/component: jenkins-controller
+      app.kubernetes.io/instance: jenkins
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: jenkins
+      helm.sh/chart: jenkins-4.1.8
+    name: jenkins-agent
+    namespace: default
+    resourceVersion: "658007"
+    uid: 940e8c4a-ffa5-4222-9f81-dbdb0bf042c2
+  spec:
+    clusterIP: 10.43.19.255
+    clusterIPs:
+    - 10.43.19.255
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: agent-listener
+      port: 50000
+      protocol: TCP
+      targetPort: 50000
+    selector:
+      app.kubernetes.io/component: jenkins-controller
+      app.kubernetes.io/instance: jenkins
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T20:11:49Z"
+    name: kernel-api
+    namespace: default
+    resourceVersion: "160616"
+    uid: 7eb5a1e6-ae60-4c69-830f-7f3aaaa83eb6
+  spec:
+    clusterIP: 10.43.248.172
+    clusterIPs:
+    - 10.43.248.172
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5104
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: kernel-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T20:11:53Z"
+    name: kernel-backgroundtasks
+    namespace: default
+    resourceVersion: "160636"
+    uid: 6cde3ce2-bcca-46d7-ae88-137fc35b4e1f
+  spec:
+    clusterIP: 10.43.234.121
+    clusterIPs:
+    - 10.43.234.121
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5114
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: kernel-backgroundtasks
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T07:28:09Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "204"
+    uid: 247332b1-7932-4465-931e-605ac3f14bfb
+  spec:
+    clusterIP: 10.43.0.1
+    clusterIPs:
+    - 10.43.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 6443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":31232,"protocol":"TCP","serviceName":"default:min-hazelcast","allNodes":true}]'
+      meta.helm.sh/release-name: min-hazelcast
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-08-02T12:38:39Z"
+    labels:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hazelcast
+      helm.sh/chart: hazelcast-5.4.7
+    name: min-hazelcast
+    namespace: default
+    resourceVersion: "16737945"
+    uid: aa2b2ac7-f5d5-498f-af31-52675b725666
+  spec:
+    clusterIP: 10.43.163.56
+    clusterIPs:
+    - 10.43.163.56
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: hzport
+      nodePort: 31232
+      port: 5701
+      protocol: TCP
+      targetPort: hazelcast
+    selector:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/name: hazelcast
+      role: hazelcast
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: min-hazelcast
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-08-02T12:38:39Z"
+    labels:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hazelcast-mancenter
+      helm.sh/chart: hazelcast-5.4.7
+    name: min-hazelcast-mancenter
+    namespace: default
+    resourceVersion: "16737948"
+    uid: 6f9233e6-70b5-4cb1-b026-1c266f73801d
+  spec:
+    allocateLoadBalancerNodePorts: true
+    clusterIP: 10.43.120.255
+    clusterIPs:
+    - 10.43.120.255
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30825
+      port: 8080
+      protocol: TCP
+      targetPort: mancenter
+    - name: https
+      nodePort: 31667
+      port: 443
+      protocol: TCP
+      targetPort: mancenter
+    selector:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/name: hazelcast-mancenter
+      role: mancenter
+    sessionAffinity: None
+    type: LoadBalancer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30655,"protocol":"TCP","serviceName":"default:nxrm-service","allNodes":true}]'
+    creationTimestamp: "2022-08-05T12:09:05Z"
+    labels:
+      app: nxrm
+    name: nxrm-service
+    namespace: default
+    resourceVersion: "17638280"
+    uid: d485a05f-c814-447f-bb59-66d953a77842
+  spec:
+    clusterIP: 10.43.164.17
+    clusterIPs:
+    - 10.43.164.17
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30655
+      port: 80
+      protocol: TCP
+      targetPort: 8081
+    selector:
+      app: nxrm
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-07-08T09:17:03Z"
+    labels:
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: sonarqube
+      helm.sh/chart: sonarqube-1.4.7
+    name: sonarqube
+    namespace: default
+    resourceVersion: "9270358"
+    uid: c7ab6ed5-3ebd-4d14-94bd-e313e4982b03
+  spec:
+    clusterIP: 10.43.131.221
+    clusterIPs:
+    - 10.43.131.221
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+    - name: elastic
+      port: 9001
+      protocol: TCP
+      targetPort: elastic
+    selector:
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/name: sonarqube
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-07-08T09:17:03Z"
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: postgresql
+      helm.sh/chart: postgresql-11.6.10
+    name: sonarqube-postgresql
+    namespace: default
+    resourceVersion: "9270354"
+    uid: a1c7cef7-f940-4cec-8aa3-a3183359c2e9
+  spec:
+    clusterIP: 10.43.160.235
+    clusterIPs:
+    - 10.43.160.235
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: tcp-postgresql
+    selector:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/name: postgresql
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-07-08T09:17:03Z"
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: postgresql
+      helm.sh/chart: postgresql-11.6.10
+      service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+    name: sonarqube-postgresql-hl
+    namespace: default
+    resourceVersion: "9270352"
+    uid: abf8afcd-268a-4c07-8ace-3ae19df5ce94
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: tcp-postgresql
+    publishNotReadyAddresses: true
+    selector:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/name: postgresql
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-08T16:24:13Z"
+    name: web-branch
+    namespace: default
+    resourceVersion: "112484"
+    uid: 2f3cdaca-f7dd-4564-88b7-facc06aeafdd
+  spec:
+    clusterIP: 10.43.166.24
+    clusterIPs:
+    - 10.43.166.24
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 9001
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: web-branch
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30746,"protocol":"TCP","serviceName":"default:web-gw","allNodes":true}]'
+    creationTimestamp: "2022-06-09T05:28:37Z"
+    name: web-gw
+    namespace: default
+    resourceVersion: "9374416"
+    uid: da8b9001-4418-4ac9-8918-c4e46c8713a0
+  spec:
+    clusterIP: 10.43.37.108
+    clusterIPs:
+    - 10.43.37.108
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30746
+      port: 5199
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: web-gw
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":31530,"protocol":"TCP","serviceName":"default:web-internetbranch","allNodes":true}]'
+    creationTimestamp: "2022-06-08T09:04:21Z"
+    name: web-internetbranch
+    namespace: default
+    resourceVersion: "9374415"
+    uid: b79c8e22-d818-4bf7-9666-699f85823ecc
+  spec:
+    clusterIP: 10.43.128.47
+    clusterIPs:
+    - 10.43.128.47
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 31530
+      port: 9002
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: web-internetbranch
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

@@ -1,0 +1,1476 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2022-06-08T18:49:27Z"
+    generation: 1
+    name: crm-api
+    namespace: default
+    resourceVersion: "17417626"
+    uid: e7629cc5-c409-4302-95c8-0f6ee95becd3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: crm-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: crm-api
+      spec:
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.CrmDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/crm-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: crm-api
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T18:49:27Z"
+      lastUpdateTime: "2022-06-08T18:49:28Z"
+      message: ReplicaSet "crm-api-6c8d8cff4f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-04T18:47:36Z"
+      lastUpdateTime: "2022-08-04T18:47:36Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2022-06-08T18:49:32Z"
+    generation: 3
+    name: dms-api
+    namespace: default
+    resourceVersion: "12465605"
+    uid: ed7c0e94-2d43-408b-b66d-dde4efd947a4
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: dms-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: dms-api
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.DmsDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          - name: FileServerPath
+            value: /dmsfiles
+          - name: FileServerArchivePath
+            value: /dmsarchive
+          image: harborapp.birevim.com/redtest/dms-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: dms-api
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T18:49:32Z"
+      lastUpdateTime: "2022-06-08T18:51:23Z"
+      message: ReplicaSet "dms-api-6db9d6855c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-19T03:19:01Z"
+      lastUpdateTime: "2022-07-19T03:19:01Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2022-06-08T18:59:56Z"
+    generation: 2
+    name: finance-api
+    namespace: default
+    resourceVersion: "12465535"
+    uid: c2b77b19-95b2-4f48-acee-3b2e335a6975
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: finance-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: finance-api
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.FinanceDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/finance-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: finance-api
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T18:59:56Z"
+      lastUpdateTime: "2022-06-08T19:00:28Z"
+      message: ReplicaSet "finance-api-858c55fc74" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-19T03:18:57Z"
+      lastUpdateTime: "2022-07-19T03:18:57Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2022-06-08T19:05:57Z"
+    generation: 2
+    name: finance-background
+    namespace: default
+    resourceVersion: "16279725"
+    uid: c12bc9f6-6cca-4e75-8d74-0a973a5b1d5f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: finance-background
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: finance-background
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.FinanceDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/finance-background:20052022
+          imagePullPolicy: IfNotPresent
+          name: finance-background
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:05:57Z"
+      lastUpdateTime: "2022-06-08T19:08:25Z"
+      message: ReplicaSet "finance-background-868bc9666b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-31T23:35:09Z"
+      lastUpdateTime: "2022-07-31T23:35:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2022-06-08T18:53:52Z"
+    generation: 2
+    name: hr-api
+    namespace: default
+    resourceVersion: "9250043"
+    uid: a13538e4-c1b0-4b90-8a93-fffe9889a0c8
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: hr-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: hr-api
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.HRDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/hr-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: hr-api
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T18:53:52Z"
+      lastUpdateTime: "2022-06-08T19:00:25Z"
+      message: ReplicaSet "hr-api-cbf9bbdfb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-08T07:43:48Z"
+      lastUpdateTime: "2022-07-08T07:43:48Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30884,"protocol":"TCP","serviceName":"default:identity-api","allNodes":true}]'
+    creationTimestamp: "2022-06-08T19:43:53Z"
+    generation: 9
+    name: identity-api
+    namespace: default
+    resourceVersion: "17162645"
+    uid: 99ecd4fb-d313-4b86-87c4-ec87fcb7b2a3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: identity-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: identity-api
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: AccountingApiClient
+            value: http://accounting-api.default.svc:5101
+          - name: AuditApiClient
+            value: http://audit-api.default.svc:5102
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.IdentityDb;User
+              Id=sqltestadm;Password=RedCase.2019
+          - name: CrmApiClient
+            value: http://crm-api.default.svc:5103
+          - name: DmsApiClient
+            value: http://dms-api.default.svc:5108
+          - name: EventBusConnection
+            value: octestrabbit
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: FinanceApiClient
+            value: http://finance-api.default.svc:5106
+          - name: HRApiClient
+            value: http://hr-api.default.svc:5107
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: KernelApiClient
+            value: http://kernel-api.default.svc:5104
+          - name: SpaClient
+            value: http://default.birevim.com
+          - name: SubscriptionClientName
+            value: Identity
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad-sil
+          - name: UseApplicationInsights
+            value: "false"
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019
+          image: harborapp.birevim.com/redtest/identity-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: identity-api
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:43:53Z"
+      lastUpdateTime: "2022-06-08T19:44:20Z"
+      message: ReplicaSet "identity-api-6947bf977" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-03T22:42:15Z"
+      lastUpdateTime: "2022-08-03T22:42:15Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 9
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2022-06-08T19:43:58Z"
+    generation: 2
+    name: identity-background
+    namespace: default
+    resourceVersion: "17162658"
+    uid: 3c344b8a-6c20-44f3-a243-7a0b3086a734
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: identity-background
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: identity-background
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.IdentityDb;User
+              Id=sqltestadm;Password=RedCase.2019
+          - name: EventBusConnection
+            value: octestrabbit
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Identity
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Microsoft
+            value: Information
+          - name: Logging__Console__LogLevel__Default
+            value: Information
+          image: harborapp.birevim.com/redtest/identity-background:20052022
+          imagePullPolicy: IfNotPresent
+          name: identity-background
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:43:58Z"
+      lastUpdateTime: "2022-06-08T19:44:37Z"
+      message: ReplicaSet "identity-background-9fb484f5c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-03T22:42:16Z"
+      lastUpdateTime: "2022-08-03T22:42:16Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2022-06-08T19:08:08Z"
+    generation: 3
+    name: kernel-api
+    namespace: default
+    resourceVersion: "9249922"
+    uid: d824136e-3953-4a44-a70f-afe9038e6342
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: kernel-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: kernel-api
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.KernelDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SubscriptionClientName
+            value: Crm
+          - name: UseCustomizationData
+            value: "True"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/kernel-api:20052022
+          imagePullPolicy: IfNotPresent
+          name: kernel-api
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:08:08Z"
+      lastUpdateTime: "2022-06-08T19:10:00Z"
+      message: ReplicaSet "kernel-api-9b5797844" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-08T07:43:46Z"
+      lastUpdateTime: "2022-07-08T07:43:46Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2022-06-08T19:36:16Z"
+    generation: 2
+    name: kernel-backgroundtasks
+    namespace: default
+    resourceVersion: "14352827"
+    uid: 216c2890-ddf7-4156-9e1c-b104d0f2dc11
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: kernel-backgroundtasks
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: kernel-backgroundtasks
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Staging
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.KernelDb;User
+              Id=sqltestadm;Password=RedCase.2019;max pool size=32000;Timeout=1200
+          - name: EventBusConnection
+            value: 192.168.200.69
+          - name: EventBusPassword
+            value: test-user
+          - name: EventBusRetryCount
+            value: "5"
+          - name: EventBusUserName
+            value: test-user
+          - name: IdentityUrl
+            value: http://identity-api.default.svc:5105
+          - name: SignalrStoreConnectionString
+            value: redis
+          - name: UseCustomizationData
+            value: "True"
+          - name: SubscriptionClientName
+            value: KernelBackground
+          - name: ApiName
+            value: kernel.api
+          - name: TZ
+            value: Europe/Istanbul
+          - name: UseApplicationInsights
+            value: "false"
+          - name: ApplicationInsights__InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: RootPositionId
+            value: 3CE445DC-F328-43F7-8906-71811AB937DB
+          - name: LogDBConnectionString
+            value: Server=192.168.200.20\TESTDB;Initial Catalog=Rodos.Services.LogDb;User
+              Id=sqltestadm;Password=RedCase.2019;
+          - name: EnableSiemLogs
+            value: "True"
+          - name: Logging__LogLevel__Default
+            value: Information
+          - name: ApplicationInsights__ConnectionString
+            value: InstrumentationKey=d6828a8c-c235-4d09-b100-144b389d80ad;IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/
+          image: harborapp.birevim.com/redtest/kernel-backgroundtasks:20052022
+          imagePullPolicy: IfNotPresent
+          name: kernel-backgroundtasks
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:36:16Z"
+      lastUpdateTime: "2022-06-08T19:36:52Z"
+      message: ReplicaSet "kernel-backgroundtasks-64f495b668" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-25T11:46:06Z"
+      lastUpdateTime: "2022-07-25T11:46:06Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30655,"protocol":"TCP","serviceName":"default:nxrm-service","allNodes":true}]'
+    creationTimestamp: "2022-08-05T12:07:54Z"
+    generation: 2
+    labels:
+      app: nxrm
+    name: nxrm-deployment
+    namespace: default
+    resourceVersion: "17635205"
+    uid: ac749452-ac7b-4882-bd68-a8d71c990e63
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: nxrm
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: nxrm
+      spec:
+        containers:
+        - env:
+          - name: DB_NAME
+            value: nx-database
+          - name: DB_USER
+            value: nx-user
+          - name: DB_PASSWORD
+            value: nxPasswd2022
+          image: sonatype/nexus3:3.38.0
+          imagePullPolicy: IfNotPresent
+          name: nxrm-pod
+          ports:
+          - containerPort: 8089
+            protocol: TCP
+          resources: {}
+          securityContext:
+            runAsUser: 200
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /blobs
+            name: nexus-registry
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - chown
+          - -R
+          - 200:200
+          - /blobs
+          image: busybox:1.33.1
+          imagePullPolicy: IfNotPresent
+          name: chown-nexusdata-owner-to-nexus
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /blobs
+            name: nexus-registry
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: nexus-registry
+          persistentVolumeClaim:
+            claimName: nexus-registry
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-08-05T12:08:42Z"
+      lastUpdateTime: "2022-08-05T12:08:42Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2022-08-05T12:07:54Z"
+      lastUpdateTime: "2022-08-05T12:08:42Z"
+      message: ReplicaSet "nxrm-deployment-5b6f445494" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-07-08T09:17:03Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: sonarqube
+      helm.sh/chart: sonarqube-1.4.7
+    name: sonarqube
+    namespace: default
+    resourceVersion: "12465586"
+    uid: 1dac3d27-b90b-41f7-b04d-c8b850d4189e
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: sonarqube
+        app.kubernetes.io/name: sonarqube
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          checksum/secret: f61c1e2a524a26c7bfed02834888214032fa8c2974c57817371ca09eaa7f8709
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: sonarqube
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: sonarqube
+          helm.sh/chart: sonarqube-1.4.7
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: sonarqube
+                    app.kubernetes.io/name: sonarqube
+                namespaces:
+                - default
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        containers:
+        - env:
+          - name: BITNAMI_DEBUG
+            value: "false"
+          - name: SONARQUBE_SKIP_BOOTSTRAP
+            value: "no"
+          - name: SONARQUBE_USERNAME
+            value: admin
+          - name: SONARQUBE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: sonarqube-password
+                name: sonarqube
+          - name: SONARQUBE_EMAIL
+            value: user@example.com
+          - name: SONARQUBE_MIN_HEAP_SIZE
+            value: 1024m
+          - name: SONARQUBE_MAX_HEAP_SIZE
+            value: 2048m
+          - name: SONARQUBE_START_TIMEOUT
+            value: "150"
+          - name: SONARQUBE_DATABASE_HOST
+            value: sonarqube-postgresql
+          - name: SONARQUBE_DATABASE_PORT_NUMBER
+            value: "5432"
+          - name: SONARQUBE_DATABASE_NAME
+            value: bitnami_sonarqube
+          - name: SONARQUBE_DATABASE_USER
+            value: bn_sonarqube
+          - name: SONARQUBE_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: sonarqube-postgresql
+          - name: SONARQUBE_PORT_NUMBER
+            value: "9000"
+          - name: SONARQUBE_ELASTICSEARCH_PORT_NUMBER
+            value: "9001"
+          image: docker.io/bitnami/sonarqube:9.5.0-debian-11-r4
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 100
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: sonarqube
+          ports:
+          - containerPort: 9000
+            name: http
+            protocol: TCP
+          - containerPort: 9001
+            name: elastic
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 100
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 2Gi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /bitnami/sonarqube
+            name: data
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - /bin/bash
+          - -ec
+          - |
+            CURRENT="$(sysctl -n vm.max_map_count)"
+            DESIRED="262144"
+            if [[ "$DESIRED" -gt "$CURRENT" ]]; then
+                sysctl -w vm.max_map_count=262144
+            fi
+            CURRENT="$(sysctl -n fs.file-max)"
+            DESIRED="65536"
+            if [[ "$DESIRED" -gt "$CURRENT" ]]; then
+                sysctl -w fs.file-max=65536
+            fi
+          image: docker.io/bitnami/bitnami-shell:11-debian-11-r8
+          imagePullPolicy: IfNotPresent
+          name: sysctl
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1001
+        serviceAccount: sonarqube
+        serviceAccountName: sonarqube
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: sonarqube
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2022-07-08T09:17:03Z"
+      lastUpdateTime: "2022-07-08T09:19:41Z"
+      message: ReplicaSet "sonarqube-6dbc9bbc95" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-07-19T03:19:00Z"
+      lastUpdateTime: "2022-07-19T03:19:00Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2022-06-08T09:17:56Z"
+    generation: 1
+    name: web-branch
+    namespace: default
+    resourceVersion: "17162709"
+    uid: 7201067d-9fcc-4447-9f6f-7edb5985951a
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: web-branch
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: web-branch
+      spec:
+        containers:
+        - env:
+          - name: UseApplicationInsights
+            value: "true"
+          - name: ApplicationInsightsInstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          image: harborapp.birevim.com/redtest/web-branch:20052022
+          imagePullPolicy: IfNotPresent
+          name: web-branch
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2022-06-08T09:17:56Z"
+      lastUpdateTime: "2022-06-08T09:17:58Z"
+      message: ReplicaSet "web-branch-556b8488dc" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-03T22:42:18Z"
+      lastUpdateTime: "2022-08-03T22:42:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":30746,"protocol":"TCP","serviceName":"default:web-gw","allNodes":true}]'
+    creationTimestamp: "2022-06-08T19:52:02Z"
+    generation: 8
+    name: web-gw
+    namespace: default
+    resourceVersion: "17162792"
+    uid: 39155fc6-27f2-48a2-85c8-bf7651ea8100
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: web-gw
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: web-gw
+      spec:
+        containers:
+        - env:
+          - name: UseApplicationInsights
+            value: "true"
+          - name: TZ
+            value: Europe/Istanbul
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ApplicationInsightsInstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          image: harborapp.birevim.com/redtest/web-gw:20052022
+          imagePullPolicy: IfNotPresent
+          name: web-gw
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2022-06-08T19:52:02Z"
+      lastUpdateTime: "2022-06-08T19:52:05Z"
+      message: ReplicaSet "web-gw-547cd5df85" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-03T22:42:20Z"
+      lastUpdateTime: "2022-08-03T22:42:20Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 8
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":31530,"protocol":"TCP","serviceName":"default:web-internetbranch","allNodes":true}]'
+    creationTimestamp: "2022-06-08T08:55:30Z"
+    generation: 5
+    name: web-internetbranch
+    namespace: default
+    resourceVersion: "17162591"
+    uid: 84429ca8-fe0b-449c-ad0e-1a208a6b8539
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 4
+    selector:
+      matchLabels:
+        app: web-internetbranch
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: web-internetbranch
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: UseApplicationInsights
+            value: "true"
+          - name: ApplicationInsightsInstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          - name: InstrumentationKey
+            value: d6828a8c-c235-4d09-b100-144b389d80ad
+          image: harborapp.birevim.com/redtest/web-internetbranch:20052022
+          imagePullPolicy: IfNotPresent
+          name: web-internetbranch
+          ports:
+          - containerPort: 80
+            name: 80tcp
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: harbor
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2022-06-08T08:55:30Z"
+      lastUpdateTime: "2022-06-08T08:56:00Z"
+      message: ReplicaSet "web-internetbranch-648c6f99c7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2022-08-03T22:42:14Z"
+      lastUpdateTime: "2022-08-03T22:42:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 5
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+kind: List
+metadata:
+  resourceVersion: ""

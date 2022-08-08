@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nxrm-deployment
+  namespace: default
+  labels:
+    app: nxrm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nxrm
+  template:
+    metadata:
+      labels:
+        app: nxrm
+    spec:
+      initContainers:
+        - name: chown-nexusdata-owner-to-nexus
+          image: busybox:1.33.1
+          command: ['chown', '-R', '200:200', '/blobs']
+          volumeMounts:
+            - name: nexus-registry
+              mountPath: /blobs
+      containers:
+        - name: nxrm-pod
+          image: sonatype/nexus3:3.38.0
+          securityContext:
+            runAsUser: 200
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8089
+          env:
+            - name: DB_NAME
+              value: nx-database  
+            - name: DB_USER
+              value: nx-user
+            - name: DB_PASSWORD
+              value: nxPasswd2022
+          volumeMounts:
+            - name: nexus-registry
+              mountPath: /blobs
+      volumes:
+        - name: nexus-registry
+          persistentVolumeClaim:
+            claimName: nexus-registry
+

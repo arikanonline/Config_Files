@@ -1,0 +1,142 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
+      volume.kubernetes.io/storage-provisioner: driver.longhorn.io
+    creationTimestamp: "2022-07-07T12:53:04Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/name: postgresql
+    name: data-sonarqube-postgresql-0
+    namespace: default
+    resourceVersion: "8679327"
+    uid: daaa70d3-fc88-4588-bb96-2afe461393f1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 8Gi
+    storageClassName: longhorn
+    volumeMode: Filesystem
+    volumeName: pvc-daaa70d3-fc88-4588-bb96-2afe461393f1
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 8Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
+      volume.kubernetes.io/storage-provisioner: driver.longhorn.io
+    creationTimestamp: "2022-08-03T08:37:36Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hazelcast-mancenter
+      helm.sh/chart: hazelcast
+      role: mancenter
+    name: mancenter-storage-min-hazelcast-mancenter-0
+    namespace: default
+    resourceVersion: "16986317"
+    uid: f671d311-60a1-4470-b2af-3a2f110cfd34
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 8Gi
+    storageClassName: longhorn
+    volumeMode: Filesystem
+    volumeName: pvc-f671d311-60a1-4470-b2af-3a2f110cfd34
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 8Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
+      volume.kubernetes.io/storage-provisioner: driver.longhorn.io
+    creationTimestamp: "2022-08-05T11:40:29Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    name: nexus-registry
+    namespace: default
+    resourceVersion: "17629167"
+    uid: c2e547d8-7667-4c1a-a040-c1ccd1e79971
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: longhorn
+    volumeMode: Filesystem
+    volumeName: pvc-c2e547d8-7667-4c1a-a040-c1ccd1e79971
+  status:
+    accessModes:
+    - ReadWriteMany
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
+      volume.kubernetes.io/storage-provisioner: driver.longhorn.io
+    creationTimestamp: "2022-07-08T09:17:02Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: sonarqube
+      helm.sh/chart: sonarqube-1.4.7
+    name: sonarqube
+    namespace: default
+    resourceVersion: "9270470"
+    uid: 49cbc556-14d0-41eb-907d-101556a97846
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: longhorn
+    volumeMode: Filesystem
+    volumeName: pvc-49cbc556-14d0-41eb-907d-101556a97846
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""

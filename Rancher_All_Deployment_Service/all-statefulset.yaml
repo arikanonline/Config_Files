@@ -1,0 +1,697 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":32154,"protocol":"TCP","serviceName":"default:jenkins","allNodes":true}]'
+      meta.helm.sh/release-name: jenkins
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-06-10T11:51:44Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: jenkins-controller
+      app.kubernetes.io/instance: jenkins
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: jenkins
+      helm.sh/chart: jenkins-4.1.8
+    name: jenkins
+    namespace: default
+    resourceVersion: "9250812"
+    uid: ad8b72c6-4f92-4050-b68a-b18c23d08bf4
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: jenkins-controller
+        app.kubernetes.io/instance: jenkins
+    serviceName: jenkins
+    template:
+      metadata:
+        annotations:
+          checksum/config: 595b4ab5732cb38bee1af153f157885a7f0ee1093f2472cf5d9f8537ed2a7e81
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: jenkins-controller
+          app.kubernetes.io/instance: jenkins
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: jenkins
+      spec:
+        containers:
+        - args:
+          - --httpPort=8080
+          env:
+          - name: SECRETS
+            value: /run/secrets/additional
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: JAVA_OPTS
+            value: '-Dcasc.reload.token=$(POD_NAME) '
+          - name: JENKINS_OPTS
+            value: '--webroot=/var/jenkins_cache/war '
+          - name: JENKINS_SLAVE_AGENT_PORT
+            value: "50000"
+          - name: CASC_JENKINS_CONFIG
+            value: /var/jenkins_home/casc_configs
+          image: jenkins/jenkins:2.332.3-jdk11
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /login
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: jenkins
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 50000
+            name: agent-listener
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /login
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsUser: 1000
+          startupProbe:
+            failureThreshold: 12
+            httpGet:
+              path: /login
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/jenkins_home
+            name: jenkins-home
+          - mountPath: /var/jenkins_config
+            name: jenkins-config
+            readOnly: true
+          - mountPath: /usr/share/jenkins/ref/plugins/
+            name: plugin-dir
+          - mountPath: /var/jenkins_home/casc_configs
+            name: sc-config-volume
+          - mountPath: /run/secrets/additional
+            name: jenkins-secrets
+            readOnly: true
+          - mountPath: /var/jenkins_cache
+            name: jenkins-cache
+          - mountPath: /tmp
+            name: tmp-volume
+        - env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: LABEL
+            value: jenkins-jenkins-config
+          - name: FOLDER
+            value: /var/jenkins_home/casc_configs
+          - name: NAMESPACE
+            value: default
+          - name: REQ_URL
+            value: http://localhost:8080/reload-configuration-as-code/?casc-reload-token=$(POD_NAME)
+          - name: REQ_METHOD
+            value: POST
+          - name: REQ_RETRY_CONNECT
+            value: "10"
+          image: kiwigrid/k8s-sidecar:1.15.0
+          imagePullPolicy: IfNotPresent
+          name: config-reload
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/jenkins_home/casc_configs
+            name: sc-config-volume
+          - mountPath: /var/jenkins_home
+            name: jenkins-home
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - /var/jenkins_config/apply_config.sh
+          image: jenkins/jenkins:2.332.3-jdk11
+          imagePullPolicy: Always
+          name: init
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/jenkins_home
+            name: jenkins-home
+          - mountPath: /var/jenkins_config
+            name: jenkins-config
+          - mountPath: /usr/share/jenkins/ref/plugins
+            name: plugins
+          - mountPath: /var/jenkins_plugins
+            name: plugin-dir
+          - mountPath: /tmp
+            name: tmp-volume
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+        serviceAccount: jenkins
+        serviceAccountName: jenkins
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: plugins
+        - configMap:
+            defaultMode: 420
+            name: jenkins
+          name: jenkins-config
+        - emptyDir: {}
+          name: plugin-dir
+        - name: jenkins-secrets
+          projected:
+            defaultMode: 420
+            sources:
+            - secret:
+                items:
+                - key: jenkins-admin-user
+                  path: chart-admin-username
+                - key: jenkins-admin-password
+                  path: chart-admin-password
+                name: jenkins
+        - emptyDir: {}
+          name: jenkins-cache
+        - emptyDir: {}
+          name: jenkins-home
+        - emptyDir: {}
+          name: sc-config-volume
+        - emptyDir: {}
+          name: tmp-volume
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: jenkins-7bcc4744b5
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: jenkins-7bcc4744b5
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      field.cattle.io/publicEndpoints: '[{"addresses":["192.168.200.142"],"port":31232,"protocol":"TCP","serviceName":"default:min-hazelcast","allNodes":true}]'
+      meta.helm.sh/release-name: min-hazelcast
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-08-02T12:38:39Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hazelcast
+      helm.sh/chart: hazelcast-5.4.7
+    name: min-hazelcast
+    namespace: default
+    resourceVersion: "17162779"
+    uid: 28b01834-92a2-412b-920c-60d3cb008617
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 3
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: min-hazelcast
+        app.kubernetes.io/name: hazelcast
+        role: hazelcast
+    serviceName: min-hazelcast
+    template:
+      metadata:
+        annotations:
+          checksum/hazelcast-config: c4b6a3fd48054c4013ca0c642202dfc072f46a56dd9e0062a942d6a8f565cb18
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: min-hazelcast
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: hazelcast
+          helm.sh/chart: hazelcast-5.4.7
+          role: hazelcast
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: JAVA_OPTS
+            value: '-Dhazelcast.config=/data/hazelcast/hazelcast.yaml -DserviceName=min-hazelcast
+              -Dnamespace=default -Dhz.jet.enabled=true -Dhazelcast.shutdownhook.policy=GRACEFUL
+              -Dhazelcast.shutdownhook.enabled=true -Dhazelcast.graceful.shutdown.max.wait=600   '
+          image: hazelcast/hazelcast:5.1.2
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /hazelcast/health/node-state
+              port: 5701
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: min-hazelcast
+          ports:
+          - containerPort: 5701
+            name: hazelcast
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /hazelcast/health/node-state
+              port: 5701
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/hazelcast
+            name: hazelcast-storage
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+        serviceAccount: min-hazelcast
+        serviceAccountName: min-hazelcast
+        terminationGracePeriodSeconds: 600
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: min-hazelcast-configuration
+          name: hazelcast-storage
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+  status:
+    availableReplicas: 3
+    collisionCount: 0
+    currentReplicas: 3
+    currentRevision: min-hazelcast-6597b6db66
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+    updateRevision: min-hazelcast-6597b6db66
+    updatedReplicas: 3
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: min-hazelcast
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-08-02T12:38:39Z"
+    generation: 11
+    labels:
+      app.kubernetes.io/instance: min-hazelcast
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hazelcast-mancenter
+      helm.sh/chart: hazelcast-5.4.7
+    name: min-hazelcast-mancenter
+    namespace: default
+    resourceVersion: "17005245"
+    uid: bdfd9b03-4704-4181-b235-bdb4e45dacd3
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: min-hazelcast
+        app.kubernetes.io/name: hazelcast-mancenter
+        role: mancenter
+    serviceName: min-hazelcast-mancenter
+    template:
+      metadata:
+        annotations:
+          cattle.io/timestamp: "2022-08-03T08:14:37Z"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: min-hazelcast
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: hazelcast-mancenter
+          helm.sh/chart: hazelcast-5.4.7
+          role: mancenter
+      spec:
+        affinity: {}
+        automountServiceAccountToken: true
+        containers:
+        - env:
+          - name: MC_INIT_CMD
+            value: './bin/mc-conf.sh cluster add --lenient=true -H /data -cc /config/hazelcast-client.yaml; '
+          - name: JAVA_OPTS
+            value: ' -Dhazelcast.mc.healthCheck.enable=true -DserviceName=min-hazelcast
+              -Dnamespace=default -Dhazelcast.mc.tls.enabled=false '
+          image: hazelcast/management-center:5.1.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: min-hazelcast-mancenter
+          ports:
+          - containerPort: 8080
+            name: mancenter
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /config
+            name: config
+          - mountPath: /data
+            name: mancenter-storage
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: man-secret
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+        serviceAccount: min-hazelcast
+        serviceAccountName: min-hazelcast
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: min-hazelcast-mancenter-configuration
+          name: config
+        - emptyDir: {}
+          name: mancenter-storage
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: min-hazelcast
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: hazelcast-mancenter
+          helm.sh/chart: hazelcast
+        name: mancenter-storage
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: longhorn
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: min-hazelcast-mancenter-86d95ffbfc
+    observedGeneration: 11
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: min-hazelcast-mancenter-86d95ffbfc
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: sonarqube
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-07-08T09:17:03Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: sonarqube
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: postgresql
+      helm.sh/chart: postgresql-11.6.10
+    name: sonarqube-postgresql
+    namespace: default
+    resourceVersion: "17162618"
+    uid: 5dd906d3-ebc0-4cff-93a6-d6598df43662
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: sonarqube
+        app.kubernetes.io/name: postgresql
+    serviceName: sonarqube-postgresql-hl
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: primary
+          app.kubernetes.io/instance: sonarqube
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: postgresql
+          helm.sh/chart: postgresql-11.6.10
+        name: sonarqube-postgresql
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: primary
+                    app.kubernetes.io/instance: sonarqube
+                    app.kubernetes.io/name: postgresql
+                namespaces:
+                - default
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        containers:
+        - env:
+          - name: BITNAMI_DEBUG
+            value: "false"
+          - name: POSTGRESQL_PORT_NUMBER
+            value: "5432"
+          - name: POSTGRESQL_VOLUME_DIR
+            value: /bitnami/postgresql
+          - name: PGDATA
+            value: /bitnami/postgresql/data
+          - name: POSTGRES_USER
+            value: bn_sonarqube
+          - name: POSTGRES_POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgres-password
+                name: sonarqube-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: sonarqube-postgresql
+          - name: POSTGRES_DB
+            value: bitnami_sonarqube
+          - name: POSTGRESQL_ENABLE_LDAP
+            value: "no"
+          - name: POSTGRESQL_ENABLE_TLS
+            value: "no"
+          - name: POSTGRESQL_LOG_HOSTNAME
+            value: "false"
+          - name: POSTGRESQL_LOG_CONNECTIONS
+            value: "false"
+          - name: POSTGRESQL_LOG_DISCONNECTIONS
+            value: "false"
+          - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+            value: "off"
+          - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+            value: error
+          - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+            value: pgaudit
+          image: docker.io/bitnami/postgresql:14.4.0-debian-11-r3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - exec pg_isready -U "bn_sonarqube" -d "dbname=bitnami_sonarqube" -h
+                127.0.0.1 -p 5432
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: postgresql
+          ports:
+          - containerPort: 5432
+            name: tcp-postgresql
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - -e
+              - |
+                exec pg_isready -U "bn_sonarqube" -d "dbname=bitnami_sonarqube" -h 127.0.0.1 -p 5432
+                [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /dev/shm
+            name: dshm
+          - mountPath: /bitnami/postgresql
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1001
+        serviceAccount: default
+        serviceAccountName: default
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir:
+            medium: Memory
+          name: dshm
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: sonarqube-postgresql-58f97f8d6d
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: sonarqube-postgresql-58f97f8d6d
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
